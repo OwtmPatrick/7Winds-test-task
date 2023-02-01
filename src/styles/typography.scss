@@ -1,0 +1,14 @@
+@mixin typography-large {
+  font-size: 18px;
+  line-height: 21px;
+}
+
+@mixin typography-body {
+  font-size: 16px;
+  line-height: 18px;
+}
+
+@mixin typography-small {
+  font-size: 10px;
+  line-height: 12px;
+}

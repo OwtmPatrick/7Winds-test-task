@@ -1,0 +1,18 @@
+@import '../../styles/all.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  //   height: 44px;
+  padding: 0 24px;
+
+  &__btns {
+    display: flex;
+    gap: 24px;
+  }
+
+  &__tabs {
+    display: flex; 
+    gap: 24px;
+  }
+}
