@@ -1,5 +1,5 @@
 import React from 'react';
-
+import List from '../List';
 import { Row } from '../../types';
 
 import './Project.style.scss';
@@ -9,7 +9,7 @@ interface IProjectProps {
 }
 
 function Project({ rows }: IProjectProps): React.ReactElement {
-  console.log('data:', rows);
+  //   console.log('data:', rows);
 
   return (
     <div className="project">
@@ -35,6 +35,8 @@ function Project({ rows }: IProjectProps): React.ReactElement {
               <td>Сметная прибыль</td>
             </tr>
           </thead>
+
+          <List rows={rows} />
         </table>
       </div>
     </div>
