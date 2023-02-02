@@ -9,6 +9,9 @@ body {
   height: 100%;
   background-color: $dark-brown;
   color: $white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  @include typography-body();
 }
 
 * {

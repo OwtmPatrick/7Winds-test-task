@@ -21,7 +21,7 @@ function Header(): React.ReactElement {
       </ul>
 
       <ul className="header__tabs">
-        <li className="header__tab header__tab-active" role="tab">
+        <li className="header__tab header__tab_active" role="tab">
           Просмотр
         </li>
         <li className="header__tab" role="tab">
