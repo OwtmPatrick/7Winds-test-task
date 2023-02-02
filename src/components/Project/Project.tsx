@@ -1,13 +1,16 @@
 import React from 'react';
 
-// @ts-ignore
-import { ReactComponent as TilesIcon } from '../../assets/tiles.svg';
-// @ts-ignore
-import { ReactComponent as UndoIcon } from '../../assets/undo.svg';
+import { Row } from '../../types';
 
 import './Project.style.scss';
 
-function Project(): React.ReactElement {
+interface IProjectProps {
+  rows: Array<Row>;
+}
+
+function Project({ rows }: IProjectProps): React.ReactElement {
+  console.log('data:', rows);
+
   return (
     <div className="project">
       <div className="project__header">Строительно-монтажные работы</div>
