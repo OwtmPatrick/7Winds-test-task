@@ -1,0 +1,47 @@
+@import '../../styles/all.scss';
+
+.sidebar {
+  min-width: 235px;
+  border-right: 1px solid $dark-grey;
+
+  &__header-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 0;
+    padding-left: 20px;
+    padding-right: 7px;
+    background: transparent;
+    color: $grey;
+    border: 0;
+    border-bottom: 1px solid $dark-grey;
+    cursor: pointer;
+  }
+
+  &__header-btn-text {
+    text-align: left;
+  }
+
+  &__header-btn-text-abbr {
+    @include typography-small();
+  }
+
+  &__project {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0;
+    padding-left: 22px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $grey;
+    }
+
+    &_active {
+      background-color: $grey;
+    }
+  }
+}
