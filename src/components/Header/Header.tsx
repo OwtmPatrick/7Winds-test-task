@@ -11,11 +11,11 @@ function Header(): React.ReactElement {
   return (
     <header className="header">
       <ul className="header__btns">
-        <li className="header__btn">
+        <li className="header__btn" role="presentation">
           <TilesIcon className="header__btn" />
         </li>
 
-        <li className="header__btn">
+        <li className="header__btn" role="presentation">
           <UndoIcon className="header__btn" />
         </li>
       </ul>

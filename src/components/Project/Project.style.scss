@@ -1,0 +1,30 @@
+@import '../../styles/all.scss';
+
+.project {
+  flex-grow: 1;
+
+  &__header {
+    display: inline-block;
+    padding: 11px 15px;
+    border-right: 1px solid $dark-grey;
+    @include typography-large();
+  }
+
+  &__table-wrapper {
+    padding: 0 10px;
+    border-top: 1px solid $dark-grey;
+  }
+
+  &__table {
+    border-collapse: collapse;
+
+    thead td {
+      padding: 12px 0;
+      color: $grey;
+    }
+
+    tr {
+      border-bottom: 1px solid $grey;
+    }
+  }
+}

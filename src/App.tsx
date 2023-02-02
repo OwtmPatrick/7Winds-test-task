@@ -5,6 +5,7 @@ import './App.style.scss';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+import Project from './components/Project';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <main className="main">
         <Sidebar />
 
-        <div>table</div>
+        <Project />
       </main>
     </>
   );
