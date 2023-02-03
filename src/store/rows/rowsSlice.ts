@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 // import type { PayloadAction } from '@reduxjs/toolkit';
+import updateRows from '../../utils/updateRows';
 import rowService from '../../services/rowService';
 import { ENTITY } from '../../constants/entity';
 
@@ -31,6 +32,30 @@ export const getRows = createAsyncThunk('rows/getRows', async (_, { getState }) 
   return data;
 });
 
+export const createRow = createAsyncThunk('rows/createRow', async (row: Row, { getState }) => {
+  const state = getState() as RootState;
+  const { data } = await rowService.createRow(state.rows.entity.id, row);
+
+  return data;
+});
+
+export const updateRow = createAsyncThunk(
+  'rows/updateRow',
+  async ({ rId, row }: { rId: number; row: Row }, { getState }) => {
+    const state = getState() as RootState;
+    const { data } = await rowService.updateRow(state.rows.entity.id, rId, row);
+
+    return data;
+  }
+);
+
+export const deleteRow = createAsyncThunk('rows/deleteRow', async (rId: number, { getState }) => {
+  const state = getState() as RootState;
+  const { data } = await rowService.deleteRow(state.rows.entity.id, rId);
+
+  return data;
+});
+
 export const rowsSlice = createSlice({
   name: 'rows',
   initialState,
@@ -41,6 +66,7 @@ export const rowsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // get state
       .addCase(getRows.pending, (state) => {
         state.loading = LoadingState.PENDING;
         state.error = null;
@@ -51,6 +77,60 @@ export const rowsSlice = createSlice({
         state.error = null;
       })
       .addCase(getRows.rejected, (state, action) => {
+        state.loading = LoadingState.ERROR;
+        state.error = action.error as string;
+      })
+      // create row
+      .addCase(createRow.pending, (state) => {
+        state.loading = LoadingState.PENDING;
+        state.error = null;
+      })
+      .addCase(createRow.fulfilled, (state, action) => {
+        // add correct row changing
+        const changed = [...action.payload.changed, action.payload.current];
+        const updatedRows = updateRows(current(state).rows, changed);
+
+        state.rows = updatedRows;
+        state.loading = LoadingState.SUCCESS;
+        state.error = null;
+      })
+      .addCase(createRow.rejected, (state, action) => {
+        state.loading = LoadingState.ERROR;
+        state.error = action.error as string;
+      })
+      // update row
+      .addCase(updateRow.pending, (state) => {
+        state.loading = LoadingState.PENDING;
+        state.error = null;
+      })
+      .addCase(updateRow.fulfilled, (state, action) => {
+        const changed = [...action.payload.changed, action.payload.current];
+        const updatedRows = updateRows(current(state).rows, changed);
+
+        state.rows = updatedRows;
+        state.loading = LoadingState.SUCCESS;
+        state.error = null;
+      })
+      .addCase(updateRow.rejected, (state, action) => {
+        state.loading = LoadingState.ERROR;
+        state.error = action.error as string;
+      })
+      // delete row
+      .addCase(deleteRow.pending, (state) => {
+        state.loading = LoadingState.PENDING;
+        state.error = null;
+      })
+      .addCase(deleteRow.fulfilled, (state, action) => {
+        console.log('delete row action:', action);
+
+        // const updatedRows = updateRows(current(state).rows, action.payload.changed);
+
+        // state.rows = updatedRows;
+        // filter rows
+        state.loading = LoadingState.SUCCESS;
+        state.error = null;
+      })
+      .addCase(deleteRow.rejected, (state, action) => {
         state.loading = LoadingState.ERROR;
         state.error = action.error as string;
       });

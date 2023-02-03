@@ -35,9 +35,9 @@ function Project({ rows }: IProjectProps): React.ReactElement {
               <td>Сметная прибыль</td>
             </tr>
           </thead>
-
-          <List rows={rows} />
         </table>
+
+        <List rows={rows} />
       </div>
     </div>
   );

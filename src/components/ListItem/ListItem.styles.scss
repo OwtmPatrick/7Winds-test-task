@@ -1,5 +1,10 @@
 @import '../../styles/all.scss';
 
-.list {
-    
+.list-item {
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+  }
 }

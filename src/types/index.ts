@@ -7,7 +7,7 @@ export enum LoadingState {
 
 export type Row = {
   id: number;
-//   parentId?: number;
+  parentId?: number;
   equipmentCosts: number;
   estimatedProfit: number;
   machineOperatorSalary: number;
