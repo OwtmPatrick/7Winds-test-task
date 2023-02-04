@@ -1,5 +1,6 @@
 import React from 'react';
 import List from '../List';
+import ListItem from '../ListItem';
 import { Row } from '../../types';
 
 import './Project.style.scss';
@@ -9,7 +10,7 @@ interface IProjectProps {
 }
 
 function Project({ rows }: IProjectProps): React.ReactElement {
-  //   console.log('data:', rows);
+  // console.log('data:', rows);
 
   return (
     <div className="project">
@@ -37,6 +38,7 @@ function Project({ rows }: IProjectProps): React.ReactElement {
           </thead>
         </table>
 
+        <ul>{!rows.length && <ListItem isEditing />}</ul>
         <List rows={rows} />
       </div>
     </div>

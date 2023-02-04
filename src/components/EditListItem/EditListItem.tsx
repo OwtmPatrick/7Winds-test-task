@@ -11,13 +11,15 @@ interface IEditListItemProps {
   parentId?: number;
   //   isNewRow: boolean;
   setIsEditing: (val: boolean) => void;
+  setAddItem: (val: boolean) => void;
 }
 
 function EditListItem({
   row,
   parentId,
   //   isNewRow,
-  setIsEditing
+  setIsEditing,
+  setAddItem
 }: IEditListItemProps): React.ReactElement {
   const [item, setItem] = useState({ ...row, parentId });
 
@@ -35,8 +37,10 @@ function EditListItem({
         await dispatch(updateRow({ rId: item.id!, row: item as Row }));
         setIsEditing(false);
       } else {
+        console.log(item);
         await dispatch(createRow(item as Row));
-        setIsEditing(false);
+        setAddItem(false);
+        // setIsEditing(false);
       }
     }
   };

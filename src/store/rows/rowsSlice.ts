@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 // import type { PayloadAction } from '@reduxjs/toolkit';
+import createNewRow from '../../utils/createRow';
 import updateRows from '../../utils/updateRows';
 import rowService from '../../services/rowService';
 import { ENTITY } from '../../constants/entity';
@@ -36,7 +37,7 @@ export const createRow = createAsyncThunk('rows/createRow', async (row: Row, { g
   const state = getState() as RootState;
   const { data } = await rowService.createRow(state.rows.entity.id, row);
 
-  return data;
+  return { data, parentId: row.parentId };
 });
 
 export const updateRow = createAsyncThunk(
@@ -51,9 +52,9 @@ export const updateRow = createAsyncThunk(
 
 export const deleteRow = createAsyncThunk('rows/deleteRow', async (rId: number, { getState }) => {
   const state = getState() as RootState;
-  const { data } = await rowService.deleteRow(state.rows.entity.id, rId);
+  await rowService.deleteRow(state.rows.entity.id, rId);
 
-  return data;
+  return rId;
 });
 
 export const rowsSlice = createSlice({
@@ -86,11 +87,20 @@ export const rowsSlice = createSlice({
         state.error = null;
       })
       .addCase(createRow.fulfilled, (state, action) => {
-        // add correct row changing
-        const changed = [...action.payload.changed, action.payload.current];
-        const updatedRows = updateRows(current(state).rows, changed);
+        const {
+          data: { changed, current: currentRow },
+          parentId
+        } = action.payload;
+        const newRows = createNewRow(current(state).rows, currentRow, parentId);
 
-        state.rows = updatedRows;
+        if (changed.length > 0) {
+          const updatedRows = updateRows(newRows, [...changed, currentRow]);
+
+          state.rows = updatedRows;
+        } else {
+          state.rows = newRows;
+        }
+
         state.loading = LoadingState.SUCCESS;
         state.error = null;
       })
