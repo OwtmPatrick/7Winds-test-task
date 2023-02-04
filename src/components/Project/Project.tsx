@@ -7,39 +7,37 @@ import './Project.style.scss';
 
 interface IProjectProps {
   rows: Array<Row>;
+  nestingTotalLevel: number;
 }
 
-function Project({ rows }: IProjectProps): React.ReactElement {
-  // console.log('data:', rows);
-
+function Project({ rows, nestingTotalLevel }: IProjectProps): React.ReactElement {
   return (
     <div className="project">
       <div className="project__header">Строительно-монтажные работы</div>
 
       <div className="project__table-wrapper">
-        <table className="project__table">
-          <colgroup>
-            <col span={1} style={{ width: '110px' }} />
-            <col span={1} style={{ width: '750px' }} />
-            <col span={1} style={{ width: '200px' }} />
-            <col span={1} style={{ width: '200px' }} />
-            <col span={1} style={{ width: '200px' }} />
-            <col span={1} style={{ width: '200px' }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <td>Уровень</td>
-              <td>Наименование работ</td>
-              <td>Основная з/п</td>
-              <td>Оборудование</td>
-              <td>Накладные расходы</td>
-              <td>Сметная прибыль</td>
-            </tr>
-          </thead>
-        </table>
+        <div className="project__table-header">
+          <div
+            className="project__table-header-item project__table-header-item_lvl"
+            style={{ paddingRight: `${nestingTotalLevel * 25}px` }}
+          >
+            Уровень
+          </div>
+          <div className="project__table-header-rest-items">
+            <div className="project__table-header-item project__table-header-item_rowName">
+              Наименование работ
+            </div>
+            <div className="project__table-header-item">Основная з/п</div>
+            <div className="project__table-header-item">Оборудование</div>
+            <div className="project__table-header-item">Накладные расходы</div>
+            <div className="project__table-header-item">Сметная прибыль</div>
+          </div>
+        </div>
 
-        <ul>{!rows.length && <ListItem isEditing />}</ul>
-        <List rows={rows} />
+        <ul>
+          {!rows.length && <ListItem isEditing isRoot nestingTotalLevel={nestingTotalLevel} />}
+        </ul>
+        <List rows={rows} nestingTotalLevel={nestingTotalLevel} />
       </div>
     </div>
   );

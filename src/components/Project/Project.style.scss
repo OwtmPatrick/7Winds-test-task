@@ -11,20 +11,30 @@
   }
 
   &__table-wrapper {
-    padding: 0 10px;
     border-top: 1px solid $dark-grey;
   }
 
-  &__table {
-    border-collapse: collapse;
+  &__table-header {
+    display: flex;
+    color: $grey;
+  }
 
-    thead td {
-      padding: 12px 0;
-      color: $grey;
+  &__table-header-rest-items {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  &__table-header-item {
+    width: 12.5%;
+    padding: 10px 0;
+
+    &_lvl {
+      width: auto;
+      padding-left: 25px;
     }
 
-    tr {
-      border-bottom: 1px solid $grey;
+    &_rowName {
+      width: 50%;
     }
   }
 }

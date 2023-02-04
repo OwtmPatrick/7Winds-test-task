@@ -37,10 +37,8 @@ function EditListItem({
         await dispatch(updateRow({ rId: item.id!, row: item as Row }));
         setIsEditing(false);
       } else {
-        console.log(item);
         await dispatch(createRow(item as Row));
         setAddItem(false);
-        // setIsEditing(false);
       }
     }
   };

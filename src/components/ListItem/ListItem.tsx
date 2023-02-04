@@ -14,34 +14,40 @@ import { deleteRow } from '../../store/rows/rowsSlice';
 
 import './ListItem.styles.scss';
 
+const newItem = {
+  equipmentCosts: 0,
+  estimatedProfit: 0,
+  machineOperatorSalary: 0,
+  mainCosts: 0,
+  materials: 0,
+  mimExploitation: 0,
+  overheads: 0,
+  rowName: '',
+  salary: 0,
+  supportCosts: 0,
+  child: []
+};
+
 interface IListItemProps {
   row?: Row;
   parentId?: number;
   nestingLevel?: number;
   isEditing: boolean;
+  isRoot?: boolean;
+  nestingTotalLevel: number;
 }
 
 function ListItem({
   row,
   parentId,
   nestingLevel = 0,
-  isEditing: isEditingFromProps
+  isEditing: isEditingFromProps,
+  isRoot,
+  nestingTotalLevel
 }: IListItemProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState<boolean>(isEditingFromProps);
   const [addItem, setAddItem] = useState<boolean>(false);
-  const item = row || {
-    equipmentCosts: 0,
-    estimatedProfit: 0,
-    machineOperatorSalary: 0,
-    mainCosts: 0,
-    materials: 0,
-    mimExploitation: 0,
-    overheads: 0,
-    rowName: '',
-    salary: 0,
-    supportCosts: 0,
-    child: []
-  };
+  const item = row || newItem;
 
   const dispatch = useAppDispatch();
 
@@ -53,55 +59,52 @@ function ListItem({
 
   return (
     <li className="list-item">
-      <div className="list-item__content" onDoubleClick={() => setIsEditing(true)}>
-        <button type="button" onClick={() => setAddItem(true)}>
-          <DocumentIcon />
-        </button>
+      <div className="list-item__content">
+        {!isRoot && (
+          <div className="list-item__btns-wrapper">
+            <div className="list-item__btns-wrapper-inner">
+              <button type="button" className="list-item__btn" onClick={() => setAddItem(true)}>
+                <DocumentIcon className="list-item__btn-icon" />
+              </button>
 
-        <button type="button" onClick={deleteCurrentRow}>
-          <TrashIcon />
-        </button>
-
-        {isEditing ? (
-          <EditListItem
-            row={item}
-            // isNewRow={false}
-            setIsEditing={setIsEditing}
-            parentId={parentId}
-            setAddItem={setAddItem}
-          />
-        ) : (
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <div>{item.rowName}</div>
-            <div>{item.salary}</div>
-            <div>{item.equipmentCosts}</div>
-            <div>{item.overheads}</div>
-            <div>{item.estimatedProfit}</div>
+              <button type="button" className="list-item__btn" onClick={deleteCurrentRow}>
+                <TrashIcon />
+              </button>
+            </div>
           </div>
         )}
+
+        <div style={{ paddingLeft: `${(nestingTotalLevel - nestingLevel) * 25}px`, flexGrow: 1 }}>
+          {isEditing ? (
+            <EditListItem
+              row={item}
+              // isNewRow={false}
+              setIsEditing={setIsEditing}
+              parentId={parentId}
+              setAddItem={setAddItem}
+            />
+          ) : (
+            <div className="list-item__row" onDoubleClick={() => setIsEditing(true)}>
+              <div className="list-item__row-item list-item__row-item_rowName">{item.rowName}</div>
+              <div className="list-item__row-item">{item.salary}</div>
+              <div className="list-item__row-item">{item.equipmentCosts}</div>
+              <div className="list-item__row-item">{item.overheads}</div>
+              <div className="list-item__row-item">{item.estimatedProfit}</div>
+            </div>
+          )}
+        </div>
       </div>
-      <List rows={item.child} parentId={parentId} nestingLevel={nestingLevel} />
+
+      <List rows={item.child} nestingLevel={nestingLevel} nestingTotalLevel={nestingTotalLevel} />
+
       {addItem && (
         <div style={{ paddingLeft: '25px' }}>
           <EditListItem
-            row={{
-              equipmentCosts: 0,
-              estimatedProfit: 0,
-              machineOperatorSalary: 0,
-              mainCosts: 0,
-              materials: 0,
-              mimExploitation: 0,
-              overheads: 0,
-              rowName: '',
-              salary: 0,
-              supportCosts: 0,
-              child: []
-            }}
+            row={newItem}
             setIsEditing={setIsEditing}
             parentId={parentId}
             setAddItem={setAddItem}
           />
-          {/* <ListItem isEditing parentId={parentId} /> */}
         </div>
       )}
     </li>
