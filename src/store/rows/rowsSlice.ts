@@ -1,26 +1,21 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
-import createNewRow from '../../utils/createRow';
-import updateRows from '../../utils/updateRows';
-import deleteRowFromTAble from '../../utils/deleteRow';
+import utils from '../../utils';
 import rowService from '../../services/rowService';
-import { ENTITY } from '../../constants/entity';
+import { ENTITY_ID } from '../../constants/entityId';
 
 import { RootState } from '../index';
 
 import { LoadingState, Row } from '../../types';
 
 export interface RowsState {
-  entity: {
-    id: number;
-    rowName: string;
-  };
+  entityId: number;
   rows: Row[];
   loading: LoadingState;
   error: string | null;
 }
 
 const initialState: RowsState = {
-  entity: ENTITY,
+  entityId: ENTITY_ID,
   rows: [],
   loading: LoadingState.IDLE,
   error: null
@@ -28,14 +23,14 @@ const initialState: RowsState = {
 
 export const getRows = createAsyncThunk('rows/getRows', async (_, { getState }) => {
   const state = getState() as RootState;
-  const { data } = await rowService.getRows(state.rows.entity.id);
+  const { data } = await rowService.getRows(state.rows.entityId);
 
   return data;
 });
 
 export const createRow = createAsyncThunk('rows/createRow', async (row: Row, { getState }) => {
   const state = getState() as RootState;
-  const { data } = await rowService.createRow(state.rows.entity.id, row);
+  const { data } = await rowService.createRow(state.rows.entityId, row);
 
   return { data, parentId: row.parentId };
 });
@@ -44,7 +39,7 @@ export const updateRow = createAsyncThunk(
   'rows/updateRow',
   async ({ rId, row }: { rId: number; row: Row }, { getState }) => {
     const state = getState() as RootState;
-    const { data } = await rowService.updateRow(state.rows.entity.id, rId, row);
+    const { data } = await rowService.updateRow(state.rows.entityId, rId, row);
 
     return data;
   }
@@ -52,7 +47,7 @@ export const updateRow = createAsyncThunk(
 
 export const deleteRow = createAsyncThunk('rows/deleteRow', async (rId: number, { getState }) => {
   const state = getState() as RootState;
-  const { data } = await rowService.deleteRow(state.rows.entity.id, rId);
+  const { data } = await rowService.deleteRow(state.rows.entityId, rId);
 
   return { data, rId };
 });
@@ -87,10 +82,10 @@ export const rowsSlice = createSlice({
           data: { changed, current: currentRow },
           parentId
         } = action.payload;
-        const newRows = createNewRow(current(state).rows, currentRow, parentId);
+        const newRows = utils.createRow(current(state).rows, currentRow, parentId);
 
         if (changed.length > 0) {
-          const updatedRows = updateRows(newRows, [...changed, currentRow]);
+          const updatedRows = utils.updateRows(newRows, [...changed, currentRow]);
 
           state.rows = updatedRows;
         } else {
@@ -111,7 +106,7 @@ export const rowsSlice = createSlice({
       })
       .addCase(updateRow.fulfilled, (state, action) => {
         const changed = [...action.payload.changed, action.payload.current];
-        const updatedRows = updateRows(current(state).rows, changed);
+        const updatedRows = utils.updateRows(current(state).rows, changed);
 
         state.rows = updatedRows;
         state.loading = LoadingState.SUCCESS;
@@ -132,10 +127,10 @@ export const rowsSlice = createSlice({
           rId
         } = action.payload;
 
-        const newRows = deleteRowFromTAble(current(state).rows, rId);
+        const newRows = utils.deleteRow(current(state).rows, rId);
 
         if (changed.length > 0) {
-          const updatedRows = updateRows(newRows, changed);
+          const updatedRows = utils.updateRows(newRows, changed);
 
           state.rows = updatedRows;
         } else {
