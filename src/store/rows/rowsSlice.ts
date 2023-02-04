@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
-// import type { PayloadAction } from '@reduxjs/toolkit';
 import createNewRow from '../../utils/createRow';
 import updateRows from '../../utils/updateRows';
+import deleteRowFromTAble from '../../utils/deleteRow';
 import rowService from '../../services/rowService';
 import { ENTITY } from '../../constants/entity';
 
@@ -52,19 +52,15 @@ export const updateRow = createAsyncThunk(
 
 export const deleteRow = createAsyncThunk('rows/deleteRow', async (rId: number, { getState }) => {
   const state = getState() as RootState;
-  await rowService.deleteRow(state.rows.entity.id, rId);
+  const { data } = await rowService.deleteRow(state.rows.entity.id, rId);
 
-  return rId;
+  return { data, rId };
 });
 
 export const rowsSlice = createSlice({
   name: 'rows',
   initialState,
-  reducers: {
-    // setLoadingState: (state, action: PayloadAction<LoadingState>) => {
-    //   state.loading = action.payload;
-    // }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // get state
@@ -131,12 +127,21 @@ export const rowsSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteRow.fulfilled, (state, action) => {
-        console.log('delete row action:', action);
+        const {
+          data: { changed },
+          rId
+        } = action.payload;
 
-        // const updatedRows = updateRows(current(state).rows, action.payload.changed);
+        const newRows = deleteRowFromTAble(current(state).rows, rId);
 
-        // state.rows = updatedRows;
-        // filter rows
+        if (changed.length > 0) {
+          const updatedRows = updateRows(newRows, changed);
+
+          state.rows = updatedRows;
+        } else {
+          state.rows = newRows;
+        }
+
         state.loading = LoadingState.SUCCESS;
         state.error = null;
       })
@@ -146,7 +151,5 @@ export const rowsSlice = createSlice({
       });
   }
 });
-
-// export const { setLoadingState } = rowsSlice.actions;
 
 export default rowsSlice.reducer;

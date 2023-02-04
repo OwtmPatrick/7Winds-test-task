@@ -1,6 +1,6 @@
 import { Row } from '../types';
 
-export default function updatedRows(rows: Array<Row>, c: Array<Row>) {
+export default function updatedRows(rows: Array<Row>, c: Array<Row>): Array<Row> {
   const copy = [...rows];
 
   const newRows: Array<Row> = copy.map((row) => {
