@@ -7,8 +7,6 @@ export default defineConfig({
   plugins: [svgr(), react()],
   base: './',
   server: {
-    host: true,
-    port: 3000,
     proxy: {
       '/api': {
         target: 'http://185.244.172.108:8081',
