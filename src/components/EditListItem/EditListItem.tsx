@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { createRow, updateRow } from '../../store/rows/rowsSlice';
 
+// @ts-ignore
+import { ReactComponent as DocumentIcon } from '../../assets/document.svg';
+
 import { Row } from '../../types';
 
 import './EditListItem.styles.scss';
@@ -9,16 +12,16 @@ import './EditListItem.styles.scss';
 interface IEditListItemProps {
   row?: Partial<Row>;
   parentId?: number;
-  //   isNewRow: boolean;
   setIsEditing: (val: boolean) => void;
+  addItem: boolean;
   setAddItem: (val: boolean) => void;
 }
 
 function EditListItem({
   row,
   parentId,
-  //   isNewRow,
   setIsEditing,
+  addItem,
   setAddItem
 }: IEditListItemProps): React.ReactElement {
   const [item, setItem] = useState({ ...row, parentId });
@@ -44,42 +47,63 @@ function EditListItem({
   };
 
   return (
-    <div className="edit-list-item">
-      <input
-        type="text"
-        name="rowName"
-        value={item.rowName}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
-      <input
-        type="text"
-        name="salary"
-        value={item.salary}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
-      <input
-        type="text"
-        name="equipmentCosts"
-        value={item.equipmentCosts}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
-      <input
-        type="text"
-        name="overheads"
-        value={item.overheads}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
-      <input
-        type="text"
-        name="estimatedProfit"
-        value={item.estimatedProfit}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
+    <div className={`edit-list-item${addItem ? ' edit-list-item_new-item' : ''}`}>
+      {addItem && <DocumentIcon />}
+      <div className="edit-list-item__inner">
+        <div className="edit-list-item__input-wrapper edit-list-item__input-wrapper_rowName">
+          <input
+            type="text"
+            name="rowName"
+            value={item.rowName}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            className="edit-list-item__input"
+          />
+        </div>
+        <div className="edit-list-item__input-wrapper">
+          <input
+            type="text"
+            name="salary"
+            value={item.salary}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            className="edit-list-item__input"
+          />
+        </div>
+
+        <div className="edit-list-item__input-wrapper">
+          <input
+            type="text"
+            name="equipmentCosts"
+            value={item.equipmentCosts}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            className="edit-list-item__input"
+          />
+        </div>
+
+        <div className="edit-list-item__input-wrapper">
+          <input
+            type="text"
+            name="overheads"
+            value={item.overheads}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            className="edit-list-item__input"
+          />
+        </div>
+
+        <div className="edit-list-item__input-wrapper">
+          <input
+            type="text"
+            name="estimatedProfit"
+            value={item.estimatedProfit}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            className="edit-list-item__input"
+          />
+        </div>
+      </div>
     </div>
   );
 }

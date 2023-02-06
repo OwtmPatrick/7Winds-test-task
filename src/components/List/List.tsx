@@ -8,11 +8,17 @@ interface IListProps {
   rows: Array<Row>;
   nestingLevel?: number;
   nestingTotalLevel: number;
+  children?: React.ReactElement | null;
 }
 
-function List({ rows, nestingLevel = 0, nestingTotalLevel }: IListProps): React.ReactElement {
+function List({
+  rows,
+  nestingLevel = 0,
+  nestingTotalLevel,
+  children
+}: IListProps): React.ReactElement {
   return (
-    <div className="list" style={{ paddingLeft: '25px' }}>
+    <div className="list">
       <ul className="list__list">
         {rows.map((row) => (
           <ListItem
@@ -24,6 +30,7 @@ function List({ rows, nestingLevel = 0, nestingTotalLevel }: IListProps): React.
             nestingTotalLevel={nestingTotalLevel}
           />
         ))}
+        {children && <li>{children}</li>}
       </ul>
     </div>
   );

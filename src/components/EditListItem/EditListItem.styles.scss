@@ -2,5 +2,58 @@
 
 .edit-list-item {
   display: flex;
-  padding-left: 30px;
+  align-items: center;
+  gap: 62px;
+  height: 60px;
+  padding-left: 25px;
+
+  &_new-item {
+    position: relative;
+    padding-left: 0;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 1px;
+      top: -22px;
+      left: -18px;
+      height: 52px;
+      background-color: $light-grey;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      left: -18px;
+      height: 1px;
+      background-color: $light-grey;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__input-wrapper {
+    width: 12.5%;
+
+    &_rowName {
+      width: 50%;
+    }
+  }
+
+  &__input {
+    width: calc(100% - 24px);
+    height: 36px;
+    padding: 10px;
+    border: 1px solid $dark-grey;
+    border-radius: 6px;
+    background-color: transparent;
+    color: $middle-grey;
+    letter-spacing: 0.1px;
+    outline: none;
+  }
 }

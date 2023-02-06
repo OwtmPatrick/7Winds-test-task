@@ -58,7 +58,7 @@ function ListItem({
   }
 
   return (
-    <li className="list-item">
+    <li className={`list-item${isRoot || nestingLevel === 1 ? ' list-item_root' : ''}`}>
       <div className="list-item__content">
         {!isRoot && (
           <div className="list-item__btns-wrapper">
@@ -78,13 +78,17 @@ function ListItem({
           {isEditing ? (
             <EditListItem
               row={item}
-              // isNewRow={false}
               setIsEditing={setIsEditing}
               parentId={parentId}
               setAddItem={setAddItem}
+              addItem={false}
             />
           ) : (
-            <div className="list-item__row" onDoubleClick={() => setIsEditing(true)}>
+            <div
+              role="presentation"
+              className="list-item__row"
+              onDoubleClick={() => setIsEditing(true)}
+            >
               <div className="list-item__row-item list-item__row-item_rowName">{item.rowName}</div>
               <div className="list-item__row-item">{item.salary}</div>
               <div className="list-item__row-item">{item.equipmentCosts}</div>
@@ -95,18 +99,17 @@ function ListItem({
         </div>
       </div>
 
-      <List rows={item.child} nestingLevel={nestingLevel} nestingTotalLevel={nestingTotalLevel} />
-
-      {addItem && (
-        <div style={{ paddingLeft: '25px' }}>
+      <List rows={item.child} nestingLevel={nestingLevel} nestingTotalLevel={nestingTotalLevel}>
+        {addItem ? (
           <EditListItem
             row={newItem}
             setIsEditing={setIsEditing}
             parentId={parentId}
             setAddItem={setAddItem}
+            addItem={addItem}
           />
-        </div>
-      )}
+        ) : null}
+      </List>
     </li>
   );
 }

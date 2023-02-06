@@ -1,5 +1,9 @@
 @import '../../styles/all.scss';
 
 .list {
-    
+  padding-left: 25px;
+
+  &_root {
+    padding-left: 55px;
+  }
 }

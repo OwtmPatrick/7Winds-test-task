@@ -34,9 +34,11 @@ function Project({ rows, nestingTotalLevel }: IProjectProps): React.ReactElement
           </div>
         </div>
 
-        <ul>
-          {!rows.length && <ListItem isEditing isRoot nestingTotalLevel={nestingTotalLevel} />}
-        </ul>
+        {!rows.length && (
+          <ul className="list list_root">
+            <ListItem isEditing isRoot nestingTotalLevel={nestingTotalLevel} />
+          </ul>
+        )}
         <List rows={rows} nestingTotalLevel={nestingTotalLevel} />
       </div>
     </div>

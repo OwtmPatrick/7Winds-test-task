@@ -1,11 +1,45 @@
 @import '../../styles/all.scss';
 
 .list-item {
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    top: -22px;
+    left: -18px;
+    height: calc(100% + 52px);
+    background-color: $light-grey;
+  }
+
+  &:last-of-type:before {
+    height: 52px;
+  }
+
+  &_root:before {
+    content: none;
+  }
+
   &__content {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
     height: 60px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      left: -18px;
+      height: 1px;
+      background-color: $light-grey;
+    }
+  }
+
+  &_root > &__content:before {
+    content: none;
   }
 
   &__btns-wrapper {
@@ -55,7 +89,8 @@
 
   &__row {
     display: flex;
-    padding-left: 30px;
+    padding-left: 28px;
+    cursor: pointer;
   }
 
   &__row-item {
