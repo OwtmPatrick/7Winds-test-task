@@ -59,7 +59,7 @@ function ListItem({
 
   return (
     <li className={`list-item${isRoot || nestingLevel === 1 ? ' list-item_root' : ''}`}>
-      <div className="list-item__content">
+      <div className={`list-item__content list-item__content_lvl-${nestingLevel - 1}`}>
         {!isRoot && (
           <div className="list-item__btns-wrapper">
             <div
@@ -111,6 +111,7 @@ function ListItem({
             parentId={parentId}
             setAddItem={setAddItem}
             addItem={addItem}
+            nestingLevel={nestingLevel}
           />
         ) : null}
       </List>

@@ -3,6 +3,21 @@
 .list {
   padding-left: 25px;
 
+  &_main {
+    position: relative;
+
+    &:after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 8px;
+        width: calc(100% - 18px);
+        height: 1px;
+        background-color: $dark-brown;
+    }
+  }
+
   &_root {
     padding-left: 55px;
   }

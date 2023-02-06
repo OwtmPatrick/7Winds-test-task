@@ -18,7 +18,7 @@ function List({
   children
 }: IListProps): React.ReactElement {
   return (
-    <div className="list">
+    <div className={`list${nestingLevel === 0 ? ' list_main' : ''}`}>
       <ul className="list__list">
         {rows.map((row) => (
           <ListItem

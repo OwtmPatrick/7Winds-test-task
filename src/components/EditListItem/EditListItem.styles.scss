@@ -32,9 +32,25 @@
   }
 
   &__inner {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
+
+    // only 10 levels of nesting
+    @for $value from 0 through 10 {
+      &_lvl-#{$value} {
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -12px;
+          height: 1px;
+          left: calc(#{$value} * (-25px) - 91px);
+          width: calc(100% + (#{$value} * 25px) + 81px);
+          background-color: $dark-grey;
+        }
+      }
+    }
   }
 
   &__input-wrapper {

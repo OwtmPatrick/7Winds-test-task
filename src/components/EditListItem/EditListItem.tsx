@@ -15,6 +15,7 @@ interface IEditListItemProps {
   setIsEditing: (val: boolean) => void;
   addItem: boolean;
   setAddItem: (val: boolean) => void;
+  nestingLevel?: number;
 }
 
 function EditListItem({
@@ -22,7 +23,8 @@ function EditListItem({
   parentId,
   setIsEditing,
   addItem,
-  setAddItem
+  setAddItem,
+  nestingLevel
 }: IEditListItemProps): React.ReactElement {
   const [item, setItem] = useState({ ...row, parentId });
 
@@ -49,7 +51,11 @@ function EditListItem({
   return (
     <div className={`edit-list-item${addItem ? ' edit-list-item_new-item' : ''}`}>
       {addItem && <DocumentIcon />}
-      <div className="edit-list-item__inner">
+      <div
+        className={`edit-list-item__inner ${
+          addItem ? ` edit-list-item__inner_lvl-${nestingLevel}` : ''
+        }`}
+      >
         <div className="edit-list-item__input-wrapper edit-list-item__input-wrapper_rowName">
           <input
             type="text"
