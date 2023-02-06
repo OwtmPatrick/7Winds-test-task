@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://185.244.172.108:8081',
+        target: 'http://185.244.172.108:8081/v1/outlay-rows/entity',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')
