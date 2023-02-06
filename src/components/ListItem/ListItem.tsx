@@ -62,7 +62,11 @@ function ListItem({
       <div className="list-item__content">
         {!isRoot && (
           <div className="list-item__btns-wrapper">
-            <div className="list-item__btns-wrapper-inner">
+            <div
+              className={`list-item__btns-wrapper-inner${
+                isEditing ? ' list-item__btns-wrapper-inner_is-editing' : ''
+              }`}
+            >
               <button type="button" className="list-item__btn" onClick={() => setAddItem(true)}>
                 <DocumentIcon className="list-item__btn-icon" />
               </button>

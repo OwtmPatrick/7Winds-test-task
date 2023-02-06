@@ -76,6 +76,10 @@
         background-color: $dark-grey;
       }
     }
+
+    &_is-editing {
+        pointer-events: none;
+    }
   }
 
   &__btn {
