@@ -1,53 +1,19 @@
-import React, { useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
-import { createRow, updateRow } from '../../store/rows/rowsSlice';
+import React from 'react';
+
+import { IEditListItemProps } from './EditListItem.types';
 
 // @ts-ignore
 import { ReactComponent as DocumentIcon } from '../../assets/document.svg';
 
-import { Row } from '../../types';
-
 import './EditListItem.styles.scss';
 
-interface IEditListItemProps {
-  row?: Partial<Row>;
-  parentId?: number;
-  setIsEditing: (val: boolean) => void;
-  addItem: boolean;
-  setAddItem: (val: boolean) => void;
-  nestingLevel?: number;
-}
-
 function EditListItem({
-  row,
-  parentId,
-  setIsEditing,
+  item,
   addItem,
-  setAddItem,
-  nestingLevel
+  nestingLevel,
+  onChange,
+  onKeyDown
 }: IEditListItemProps): React.ReactElement {
-  const [item, setItem] = useState({ ...row, parentId });
-
-  const dispatch = useAppDispatch();
-
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-
-    setItem({ ...item, [name]: name === 'rowName' ? value : Number(value) });
-  }
-
-  const onKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      if ('id' in item) {
-        await dispatch(updateRow({ rId: item.id!, row: item as Row }));
-        setIsEditing(false);
-      } else {
-        await dispatch(createRow(item as Row));
-        setAddItem(false);
-      }
-    }
-  };
-
   return (
     <div className={`edit-list-item${addItem ? ' edit-list-item_new-item' : ''}`}>
       {addItem && <DocumentIcon />}

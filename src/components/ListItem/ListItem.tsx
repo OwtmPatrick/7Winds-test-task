@@ -1,62 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // @ts-ignore
 import { ReactComponent as DocumentIcon } from '../../assets/document.svg';
 // @ts-ignore
 import { ReactComponent as TrashIcon } from '../../assets/trash.svg';
 
-import { Row } from '../../types';
 import List from '../List';
 import EditListItem from '../EditListItem';
 
-import { useAppDispatch } from '../../store/hooks';
-import { deleteRow } from '../../store/rows/rowsSlice';
+import { newItem } from '.';
+
+import { IListItemProps } from './ListItem.types';
 
 import './ListItem.styles.scss';
 
-const newItem = {
-  equipmentCosts: 0,
-  estimatedProfit: 0,
-  machineOperatorSalary: 0,
-  mainCosts: 0,
-  materials: 0,
-  mimExploitation: 0,
-  overheads: 0,
-  rowName: '',
-  salary: 0,
-  supportCosts: 0,
-  child: []
-};
-
-interface IListItemProps {
-  row?: Row;
-  parentId?: number;
-  nestingLevel?: number;
-  isEditing: boolean;
-  isRoot?: boolean;
-  nestingTotalLevel: number;
-}
-
 function ListItem({
-  row,
   parentId,
   nestingLevel = 0,
-  isEditing: isEditingFromProps,
+  isEditing,
+  setIsEditing,
+  addItem,
+  setAddItem,
+  item,
   isRoot,
-  nestingTotalLevel
+  nestingTotalLevel,
+  deleteCurrentRow
 }: IListItemProps): React.ReactElement {
-  const [isEditing, setIsEditing] = useState<boolean>(isEditingFromProps);
-  const [addItem, setAddItem] = useState<boolean>(false);
-  const item = row || newItem;
-
-  const dispatch = useAppDispatch();
-
-  function deleteCurrentRow() {
-    if ('id' in item) {
-      dispatch(deleteRow(item.id));
-    }
-  }
-
   return (
     <li className={`list-item${isRoot || nestingLevel === 1 ? ' list-item_root' : ''}`}>
       <div className={`list-item__content list-item__content_lvl-${nestingLevel - 1}`}>
