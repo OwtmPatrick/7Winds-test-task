@@ -32,6 +32,7 @@ function EditListItem({
             className="edit-list-item__input"
           />
         </div>
+
         <div className="edit-list-item__input-wrapper">
           <input
             type="text"

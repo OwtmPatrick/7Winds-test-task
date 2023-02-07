@@ -1,15 +1,9 @@
 import React from 'react';
 import List from '../List';
 import ListItem from '../ListItem';
-import { Row } from '../../types';
+import { IProjectProps } from './Project.types';
 
 import './Project.style.scss';
-
-interface IProjectProps {
-  rows: Array<Row>;
-  nestingTotalLevel: number;
-  isLoading: boolean;
-}
 
 function Project({ rows, nestingTotalLevel, isLoading }: IProjectProps): React.ReactElement {
   return (
