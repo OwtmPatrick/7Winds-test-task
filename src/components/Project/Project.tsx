@@ -8,14 +8,17 @@ import './Project.style.scss';
 interface IProjectProps {
   rows: Array<Row>;
   nestingTotalLevel: number;
+  isLoading: boolean;
 }
 
-function Project({ rows, nestingTotalLevel }: IProjectProps): React.ReactElement {
+function Project({ rows, nestingTotalLevel, isLoading }: IProjectProps): React.ReactElement {
   return (
     <div className="project">
       <div className="project__header">Строительно-монтажные работы</div>
 
-      <div className="project__table-wrapper">
+      <div
+        className={`project__table-wrapper${isLoading ? ' project__table-wrapper_loading' : ''}`}
+      >
         <div className="project__table-header">
           <div
             className="project__table-header-item project__table-header-item_lvl"
@@ -39,7 +42,14 @@ function Project({ rows, nestingTotalLevel }: IProjectProps): React.ReactElement
             <ListItem isEditing isRoot nestingTotalLevel={nestingTotalLevel} />
           </ul>
         )}
+
         <List rows={rows} nestingTotalLevel={nestingTotalLevel} />
+
+        {isLoading && (
+          <div className="project__spinner-wrapper">
+            <div className="project__spinner" />
+          </div>
+        )}
       </div>
     </div>
   );
